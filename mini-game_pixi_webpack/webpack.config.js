@@ -18,7 +18,7 @@ const optimization = () => {
    chunks: 'all'
   }
  }
- if(isProd) {
+ if (isProd) {
   config.minimizer = [
    new OptimizeCss(),
    new TerserWebpackPlugin()
@@ -30,21 +30,22 @@ const optimization = () => {
 module.exports = {
  context: path.resolve(__dirname, 'src'),
  mode: 'development', //не минифицирован bundle.js
- entry: './app.js',
- // entry: {
- //  main: './app.js',
- //  pixi: './pixi.min.js'
- // },
+ entry: './app.ts',
+//  entry: './app_1.ts',
+//  entry: './app.js',
  output: {
   filename: '[name].[contenthash].js', //очистка хеша
   path: path.resolve(__dirname, 'dist')//куда складывать
  },
  resolve: {
-  extensions: ['.js', '.json'], //можно не указывать при экспорте разрешения, которые указаны тут
+  extensions: ['.js', '.ts', '.json'], //можно не указывать при экспорте разрешения, которые указаны тут
   alias: { //что бы не указывать относительный путь
    '@': path.resolve(__dirname, "src"),
   },
  },
+ performance : {
+  hints : false
+},   
  optimization: optimization(),
  devServer: {
   port: 8080
@@ -78,6 +79,11 @@ module.exports = {
      loader: MiniCssPlugin.loader,
     }, 'css-loader'
     ]
+   },
+   {
+    test: /\.ts$/,
+    use: 'ts-loader',
+    exclude: /node_modules/,
    },
    {
     test: /\.(ttf|woff)$/,
